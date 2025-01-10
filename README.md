@@ -1,7 +1,7 @@
 # demo-edu-http-classic-js
 User Management API
 
-Here's a sample **README.md** file for the Express application you shared. It outlines the functionality, setup instructions, and API endpoints for your project.
+Here's a sample **README.md** file for the Express application shared. It outlines the functionality, setup instructions, and API endpoints for your project.
 
 ---
 
