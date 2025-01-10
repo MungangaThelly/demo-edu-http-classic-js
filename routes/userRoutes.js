@@ -60,15 +60,24 @@ router.post('/login', async (req, res) => {
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) return res.status(400).json({ message: 'Invalid credentials' });
 
+    // skapa JWT-token
     const token = jwt.sign(
       { userId: user._id },
       process.env.JWT_SECRET, // Use JWT secret stored in environment variables
       { expiresIn: '1h' }
     );
 
-    res.json({ token });
+    // Skicka token som en HttpOnly cookie
+    res.cookie('token', token, {
+      httpOnly: true,  // Kan inte nås via JavaScript
+      secure: process.env.NODE_ENV === 'production',  // Används endast över HTTPS
+      sameSite: 'Strict',  // Förhindrar att token skickas vid tredje parts begäran
+      maxAge: 3600000,  // Giltig i en timme
+    });
+    
+    res.status(200).json({ message: 'Logged in successfully' });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(500).json({ message: 'Something went wrong' });
   }
 });
 
