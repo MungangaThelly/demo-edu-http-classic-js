@@ -34,6 +34,10 @@ router.post('/register', async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10);
     const newUser = new User({ name, email, password: hashedPassword });
     await newUser.save();
+
+    // Exkludera Lösenordet från svaret
+    newUser.password = undefined;
+
     res.status(201).json(newUser);
   } catch (error) {
     res.status(500).json({ message: error.message });
